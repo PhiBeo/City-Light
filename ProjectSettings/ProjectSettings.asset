@@ -160,7 +160,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Liminal.TemplateLimapp
+    Android: com.Nocturnal.CityLights
     Standalone: com.Liminal.TemplateLimapp
   buildNumber: {}
   AndroidBundleVersionCode: 1
