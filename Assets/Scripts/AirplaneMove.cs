@@ -6,12 +6,14 @@ public class AirplaneMove : MonoBehaviour
     [SerializeField] private Transform endPoint;
 
     [Tooltip("Time to move between two point")]
-    [SerializeField] private float moveTime = 5f;
+    [SerializeField] private float moveSpeed = 5f;
 
     [Tooltip("Set the time that object will start moving after scene started in seconds")]
     [SerializeField] private float startTime;
 
     private float travelDist;
+    private float distCover = 0;
+    private float fracOfDist = 0;
 
     void Start()
     {
@@ -27,10 +29,17 @@ public class AirplaneMove : MonoBehaviour
     {
         if (Time.time <= startTime) return;
 
-        float distCover = (Time.time - startTime) * moveTime;
+        distCover = (Time.time - startTime) * moveSpeed;
 
-        float fracOfDist = distCover / travelDist;
+        fracOfDist = distCover / travelDist;
 
         transform.position = Vector3.Lerp(startPoint.position, endPoint.position, fracOfDist);
+
+        transform.rotation.SetLookRotation(endPoint.position);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(startPoint.position, endPoint.position);
     }
 }
