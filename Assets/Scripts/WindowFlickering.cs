@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WindowFlickering : MonoBehaviour
 {
-    [SerializeField] private Transform windowPanesParentObject;
+    [SerializeField] private List<Transform> windowPaneManager;
     [SerializeField] private int maxWindowsToChange;
     [SerializeField] private float windowChangeDelay;
     [SerializeField] private float maxTimerDelay;
@@ -16,9 +16,12 @@ public class WindowFlickering : MonoBehaviour
     private void Start()
     {
         windowPanes = new List<GameObject>();
-        foreach (Transform child in windowPanesParentObject)
+        foreach (Transform windowParent in windowPaneManager)
         {
-            windowPanes.Add(child.gameObject);
+            foreach (Transform child in windowParent)
+            {
+                windowPanes.Add(child.gameObject);
+            }
         }
         FlipWindowLights();
     }
