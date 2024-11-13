@@ -21,6 +21,10 @@ public class WindowFlickering : MonoBehaviour
             foreach (Transform child in windowParent)
             {
                 windowPanes.Add(child.gameObject);
+                if (RandomBool(3))
+                {
+                    child.gameObject.SetActive(false);
+                }
             }
         }
         FlipWindowLights();
@@ -40,8 +44,7 @@ public class WindowFlickering : MonoBehaviour
     {
         for (int i = 0; i < maxWindowsToChange; ++i)
         {
-            int change = Random.Range(0, 2);
-            if (change != 0)
+            if (RandomBool(2))
             {
                 float delay = Random.Range(0.0f, maxTimerDelay);
                 Invoke("FlipRandomWindowLight", delay);
@@ -54,5 +57,15 @@ public class WindowFlickering : MonoBehaviour
         randomIndex = Random.Range(0, windowPanes.Count);
         GameObject chosenWindow = windowPanes[randomIndex];
         chosenWindow.SetActive(!chosenWindow.activeSelf);
+    }
+
+    private bool RandomBool(int max)
+    {
+        int change = Random.Range(0, max);
+        if (change != 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
