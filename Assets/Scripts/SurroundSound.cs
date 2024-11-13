@@ -51,7 +51,6 @@ public class SurroundSound : MonoBehaviour
 
         audioSource.clip = audioClips[randIndex];
         audioSource.Play();
-        Debug.Log($"Play sound index: {randIndex}");
 
         lastPlayedSound = randIndex;
 

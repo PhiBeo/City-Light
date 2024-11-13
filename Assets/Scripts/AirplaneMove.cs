@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]
 public struct PlaneRoute
@@ -14,19 +15,18 @@ public class AirplaneMove : MonoBehaviour
 {
     [SerializeField] private PlaneRoute[] routes;
 
-    [Tooltip("Time to move between two point")]
     [SerializeField] private float moveSpeed = 5f;
 
-    [Tooltip("Set the time that object will start moving after scene started in seconds")]
     [SerializeField] private float startTime;
 
-    [SerializeField] private float minInterval = 3f;
-    [SerializeField] private float maxInterval = 5f;
+    [SerializeField] private float minInterval = 20f;
+    [SerializeField] private float maxInterval = 50f;
 
     private float distCover = 0;
     private float fracOfDist = 0;
     private int currentRoute = -1;
     private bool hasFlight = false;
+    private List<PlaneRoute> flightList;
 
     void Start()
     {
@@ -34,18 +34,25 @@ public class AirplaneMove : MonoBehaviour
         {
             routes[i].distance = Vector3.Distance(routes[i].startPoint.position, routes[i].endPoint.position);
         }
+
+        flightList = routes.ToList();
+
+        GenerateNewRounte();
     }
 
     void Update()
     {
         if(Time.time > startTime && !hasFlight)
         {
-            currentRoute = Random.Range(0, routes.Length);
             hasFlight = true;
         }
 
         if (!hasFlight) return;
         MoveObject();
+
+        if (transform.position != flightList[currentRoute].endPoint.position) return;
+
+        flightList.RemoveAt(currentRoute);
         GenerateNewRounte();
     }
 
@@ -53,21 +60,30 @@ public class AirplaneMove : MonoBehaviour
     {
         distCover = (Time.time - startTime) * moveSpeed;
 
-        fracOfDist = distCover / routes[currentRoute].distance;
+        fracOfDist = distCover / flightList[currentRoute].distance;
 
-        transform.position = Vector3.Lerp(routes[currentRoute].startPoint.position, routes[currentRoute].endPoint.position, fracOfDist);
-
-        transform.rotation.SetLookRotation(routes[currentRoute].endPoint.position);
+        transform.position = Vector3.Lerp(flightList[currentRoute].startPoint.position, flightList[currentRoute].endPoint.position, fracOfDist);
     }
 
     void GenerateNewRounte()
     {
-        if (transform.position != routes[currentRoute].endPoint.position) return;
-
         hasFlight = false;
         startTime = Time.time + Random.Range(minInterval, maxInterval);
-        currentRoute = Random.Range(0, routes.Length);
-        Debug.Log("New route generate");
+        if(flightList.Count == 0)
+        {
+            flightList = routes.ToList();
+        }
+        currentRoute = Random.Range(0, flightList.Count);
+
+        AdjustFlightFacing();
+
+        Debug.Log("Finish generate new flight");
+    }
+
+    void AdjustFlightFacing()
+    {
+        Vector3 direction = flightList[currentRoute].endPoint.position - flightList[currentRoute].startPoint.position;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     private void OnDrawGizmos()
