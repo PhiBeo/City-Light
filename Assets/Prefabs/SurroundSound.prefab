@@ -48,12 +48,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 244c815add758264cabfaf0df531d35c, type: 3}
   - {fileID: 8300000, guid: 0437a17d2cf6f55478cc22efa0e4a4f1, type: 3}
   - {fileID: 8300000, guid: 1af9ddf139be21646a55e1aba080a3cd, type: 3}
-  - {fileID: 8300000, guid: 6c67732f228f158409f4a25a69476b37, type: 3}
-  - {fileID: 8300000, guid: 11602de8e96049742a97bc987b89de45, type: 3}
-  - {fileID: 8300000, guid: ee9b35eba4aecf24eaab651c4d268f80, type: 3}
-  - {fileID: 8300000, guid: fa7c94fd61fdc2f4496bbc243f905f10, type: 3}
-  minInterval: 6
-  maxInterval: 10
+  minInterval: 1
+  maxInterval: 5
   randomLocation: 1
   maxDistance: 100
 --- !u!82 &8367537251096591130
