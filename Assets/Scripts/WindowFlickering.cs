@@ -10,14 +10,14 @@ public class WindowFlickering : MonoBehaviour
     [SerializeField] private float maxTimerDelay;
 
     private List<GameObject> windowPanes;
-    private List<GameObject> windowPanesOff;
+    //private List<GameObject> windowPanesOff;
     private int randomIndex;
     private float timer = 0.0f;
 
     private void Start()
     {
         windowPanes = new List<GameObject>();
-        windowPanesOff = new List<GameObject>();
+        //windowPanesOff = new List<GameObject>();
         foreach (Transform windowParent in windowPaneManager)
         {
             int i = 0;
@@ -29,16 +29,25 @@ public class WindowFlickering : MonoBehaviour
                     {
                         windowPanes.Add(window.gameObject);
                     }
+                    //i = 1;
                 }
-                else
-                {
-                    foreach (Transform window in windowList)
-                    {
-                        windowPanesOff.Add(window.gameObject);
-                    }
-                }
+                //else
+                //{
+                //    foreach (Transform window in windowList)
+                //    {
+                //        windowPanesOff.Add(window.gameObject);
+                //    }
+                //}
             }
-            i = 1;
+        }
+
+        for (int i = 0; i < windowPanes.Count; ++i)
+        {
+            if (RandomBool(2))
+            {
+                windowPanes[i].SetActive(false);
+                //windowPanesOff[i].SetActive(true);
+            }
         }
     }
 
@@ -69,7 +78,7 @@ public class WindowFlickering : MonoBehaviour
         randomIndex = Random.Range(0, windowPanes.Count);
         GameObject chosenWindow = windowPanes[randomIndex];
         chosenWindow.SetActive(!chosenWindow.activeSelf);
-        windowPanesOff[randomIndex].SetActive(!chosenWindow.activeSelf);
+        //windowPanesOff[randomIndex].SetActive(!chosenWindow.activeSelf);
 
     }
 
