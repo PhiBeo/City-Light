@@ -16,7 +16,7 @@ public class SurroundSound : MonoBehaviour
 
     private int lastPlayedSound = -1;
     private Vector3 startPos;
-    private List<int> soundPlayedCount;
+    [SerializeField] private List<int> soundPlayedCount;
 
     void Start()
     {
@@ -84,13 +84,10 @@ public class SurroundSound : MonoBehaviour
 
         average = total / soundPlayedCount.Count;
 
-        if(soundPlayedCount[index] <= average)
+        if(soundPlayedCount[index] <= average + 0.6f)
         {
-            Debug.Log("Index is weight is normal");
             return index;
         }
-
-        Debug.Log("Rebalance Weight");
 
         int smallestPlayIndex = 0;
         int smallestplayedTime = 99;
