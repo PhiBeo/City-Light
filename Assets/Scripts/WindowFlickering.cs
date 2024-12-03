@@ -10,24 +10,45 @@ public class WindowFlickering : MonoBehaviour
     [SerializeField] private float maxTimerDelay;
 
     private List<GameObject> windowPanes;
+    private List<GameObject> windowPanesOff;
     private int randomIndex;
     private float timer = 0.0f;
 
     private void Start()
     {
         windowPanes = new List<GameObject>();
+        windowPanesOff = new List<GameObject>();
         foreach (Transform windowParent in windowPaneManager)
         {
-            foreach (Transform child in windowParent)
+            int i = 0;
+            foreach (Transform windowList in windowParent)
             {
-                windowPanes.Add(child.gameObject);
-                if (RandomBool(3))
+                if (i == 0)
                 {
-                    child.gameObject.SetActive(false);
+                    foreach (Transform window in windowList)
+                    {
+                        windowPanes.Add(window.gameObject);
+                    }
+                    i = 1;
+                }
+                else
+                {
+                    foreach (Transform window in windowList)
+                    {
+                        windowPanesOff.Add(window.gameObject);
+                    }
                 }
             }
         }
-        FlipWindowLights();
+
+        for (int i = 0; i < windowPanes.Count; ++i)
+        {
+            if (RandomBool(2))
+            {
+                windowPanes[i].SetActive(false);
+                windowPanesOff[i].SetActive(true);
+            }
+        }
     }
 
     void Update()
@@ -35,14 +56,14 @@ public class WindowFlickering : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > windowChangeDelay)
         {
-            FlipWindowLights();
+            FlipWindowLights(maxWindowsToChange);
             timer = 0.0f;
         }
     }
 
-    private void FlipWindowLights()
+    private void FlipWindowLights(int toChange)
     {
-        for (int i = 0; i < maxWindowsToChange; ++i)
+        for (int i = 0; i < toChange; ++i)
         {
             if (RandomBool(2))
             {
@@ -57,6 +78,8 @@ public class WindowFlickering : MonoBehaviour
         randomIndex = Random.Range(0, windowPanes.Count);
         GameObject chosenWindow = windowPanes[randomIndex];
         chosenWindow.SetActive(!chosenWindow.activeSelf);
+        windowPanesOff[randomIndex].SetActive(!chosenWindow.activeSelf);
+
     }
 
     private bool RandomBool(int max)
