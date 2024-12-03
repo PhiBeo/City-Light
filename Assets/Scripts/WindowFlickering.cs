@@ -29,6 +29,7 @@ public class WindowFlickering : MonoBehaviour
                     {
                         windowPanes.Add(window.gameObject);
                     }
+                    i = 1;
                 }
                 else
                 {
@@ -38,7 +39,15 @@ public class WindowFlickering : MonoBehaviour
                     }
                 }
             }
-            i = 1;
+        }
+
+        for (int i = 0; i < windowPanes.Count; ++i)
+        {
+            if (RandomBool(2))
+            {
+                windowPanes[i].SetActive(false);
+                windowPanesOff[i].SetActive(true);
+            }
         }
     }
 
@@ -81,10 +90,5 @@ public class WindowFlickering : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    private bool HasRenderer(GameObject obj)
-    {
-        return obj.GetComponent<Renderer>() != null;
     }
 }
