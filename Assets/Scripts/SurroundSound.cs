@@ -17,11 +17,20 @@ public class SurroundSound : MonoBehaviour
     private int lastPlayedSound = -1;
     private Vector3 startPos;
 
+    private Dictionary<int, int> playedTime;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         timer = Random.Range(minInterval, maxInterval);
         startPos = transform.position;
+
+        playedTime = new Dictionary<int, int>();
+
+        for(int i = 0; i < audioClips.Count; i++)
+        {
+            playedTime.Add(i, 0);
+        }
     }
 
     void Update()
@@ -49,10 +58,14 @@ public class SurroundSound : MonoBehaviour
             randIndex = Random.Range(0, audioClips.Count);
         }
 
+        randIndex = SoundRepeatCheck(randIndex);
+
         audioSource.clip = audioClips[randIndex];
         audioSource.Play();
 
         lastPlayedSound = randIndex;
+
+        playedTime[randIndex]++;
 
         timer = Random.Range(minInterval, maxInterval);
     }
@@ -63,5 +76,41 @@ public class SurroundSound : MonoBehaviour
         float zPos = Random.Range(startPos.z - maxDistance, startPos.z + maxDistance);
 
         transform.position = new Vector3(xPos, transform.position.y, zPos);
+    }
+
+    int SoundRepeatCheck(int value)
+    {
+        int averagePlayTime = 0;
+
+        for(int i = 0; i < playedTime.Count; i++)
+        {
+            averagePlayTime += playedTime[i];
+        }
+
+        averagePlayTime = averagePlayTime / playedTime.Count;
+
+        //Play the random sound
+        if(playedTime[value] <= averagePlayTime + 1)
+        {
+            return value;
+        }
+
+        Debug.Log("Balance sound played count");
+
+        //if random sound is played too many time
+        //selected the smallest played sound
+        int smallestIndex = -1;
+        int smallestValue = 999;
+
+        for(int i = 0; i < playedTime.Count; i++)
+        {
+            if(playedTime[i] < smallestValue)
+            {
+                smallestIndex = i;
+                smallestValue = playedTime[i];
+            }
+        }
+
+        return smallestIndex;
     }
 }

@@ -22,6 +22,8 @@ public class AirplaneMove : MonoBehaviour
     [SerializeField] private float minInterval = 20f;
     [SerializeField] private float maxInterval = 50f;
 
+    [SerializeField] private AudioSource Soundsource;
+
     private float distCover = 0;
     private float fracOfDist = 0;
     private int currentRoute = -1;
@@ -38,22 +40,15 @@ public class AirplaneMove : MonoBehaviour
         flightList = routes.ToList();
 
         GenerateNewRounte();
+
+        Soundsource.Pause();
     }
 
     void Update()
     {
-        if(Time.time > startTime && !hasFlight)
-        {
-            hasFlight = true;
-        }
-
-        if (!hasFlight) return;
-        MoveObject();
-
-        if (transform.position != flightList[currentRoute].endPoint.position) return;
-
-        flightList.RemoveAt(currentRoute);
-        GenerateNewRounte();
+        FlightStart();
+        FlightOngoing();
+        FlightFinish();
     }
 
     void MoveObject()
@@ -76,14 +71,36 @@ public class AirplaneMove : MonoBehaviour
         currentRoute = Random.Range(0, flightList.Count);
 
         AdjustFlightFacing();
-
-        Debug.Log("Finish generate new flight");
     }
 
     void AdjustFlightFacing()
     {
         Vector3 direction = flightList[currentRoute].endPoint.position - flightList[currentRoute].startPoint.position;
         transform.rotation = Quaternion.LookRotation(direction);
+    }
+
+    void FlightStart()
+    {
+        if (Time.time > startTime && !hasFlight)
+        {
+            hasFlight = true;
+            Soundsource.Play();
+        }
+    }
+
+    void FlightOngoing()
+    {
+        if (!hasFlight) return;
+        MoveObject();
+    }
+
+    void FlightFinish()
+    {
+        if (transform.position != flightList[currentRoute].endPoint.position) return;
+
+        Soundsource.Pause();
+        flightList.RemoveAt(currentRoute);
+        GenerateNewRounte();
     }
 
     private void OnDrawGizmos()
