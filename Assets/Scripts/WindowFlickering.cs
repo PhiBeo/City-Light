@@ -9,11 +9,14 @@ public class WindowFlickering : MonoBehaviour
     [SerializeField] private float maxTimerDelay;
 
     private List<GameObject> windowPanes;
-    private List<GameObject> windowPanesOff;
+    private List<GameObject> windowPanesOff; //Originally was changing the color and opacity of the material on the window, but this caused excessive lag in VR, this was the least laggy solution
     private int randomIndex;
     private float timer = 0f;
 
-    private float musicStartTime = 13f;
+    private GameObject chosenWindowOn;
+    private GameObject chosenWindowOff;
+
+    private float musicStartTime = 13f; //Manually tracked start time of song
     private float musicSlowWindowDelay = 6f; //slow start of song until 60 seconds, and again at 240 seconds
     private float musicFastWindowDelay = 3f; //faster middle
     private float musicWindowDelay = 3f;
@@ -25,7 +28,7 @@ public class WindowFlickering : MonoBehaviour
     {
         windowPanes = new List<GameObject>();
         windowPanesOff = new List<GameObject>();
-        foreach (Transform windowParent in windowPaneManager)
+        foreach (Transform windowParent in windowPaneManager) //Fills the window lists on start for later use
         {
             int i = 0;
             foreach (Transform windowList in windowParent)
@@ -48,12 +51,12 @@ public class WindowFlickering : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < windowPanes.Count; ++i)
+        for (int i = 0; i < windowPanes.Count; ++i) //Starts the scene with random windows off
         {
             if (RandomBool(2))
             {
                 windowPanes[i].SetActive(false);
-                windowPanesOff[i].SetActive(true);
+               // windowPanesOff[i].SetActive(true);
             }
         }
     }
@@ -64,23 +67,23 @@ public class WindowFlickering : MonoBehaviour
         timer += dt;
         playTimer += dt;
 
-        if (playTimer < 13f) //start time of song
+        if (playTimer < musicStartTime) //start time of song
         {
             return;
         }
 
-        if (musicFlipCount >= 3)
+        if (musicFlipCount >= 3) //Three piano notes before longer break
         {
-            musicWindowDelay = 6f;
+            musicWindowDelay = musicSlowWindowDelay;
         }
         else
         {
-            musicWindowDelay = 3f;
+            musicWindowDelay = musicFastWindowDelay;
         }
 
         if (playTimer < 60f || playTimer > 240f) //single window flip
         {
-            if (timer > musicWindowDelay)
+            if (timer > musicWindowDelay) //Flips windows after the appropriate time to sync with music, handling delays between notes
             {
                 FlipWindowLights(maxWindowsToChange, false);
                 timer = 0.0f;
@@ -110,34 +113,26 @@ public class WindowFlickering : MonoBehaviour
     {
         for (int i = 0; i < toChange; ++i)
         {
-            //if (RandomBool(2))
-            //{
-            //    float delay = Random.Range(0.0f, maxTimerDelay);
-            //    //Invoke("FlipRandomWindowLight", delay);
-            //    FlipRandomWindowLight();
-            //}
             if (!triplet)
             {
                 FlipRandomWindowLight();
             }
             else
             {
-                FlipRandomWindowLight();
+                FlipRandomWindowLight(); //Flip lights three times with slight delay to 'trill' the lights with the piano
                 Invoke("FlipRandomWindowLight", 0.1f);
                 Invoke("FlipRandomWindowLight", 0.2f);
             }
-            //float delay = Random.Range(0.0f, maxTimerDelay);
-            //Invoke("FlipRandomWindowLight", delay);
-
         }
     }
 
-    private void FlipRandomWindowLight()
+    private void FlipRandomWindowLight() 
     {
-        randomIndex = Random.Range(0, windowPanes.Count);
-        GameObject chosenWindow = windowPanes[randomIndex];
-        chosenWindow.SetActive(!chosenWindow.activeSelf);
-        windowPanesOff[randomIndex].SetActive(!chosenWindow.activeSelf);
+        randomIndex = Random.Range(0, windowPanes.Count); //Chooses a random index to flip, saves time from cycling through entire list of windows
+        chosenWindowOn = windowPanes[randomIndex];
+        //chosenWindowOff = windowPanesOff[randomIndex];
+        chosenWindowOn.SetActive(!chosenWindowOn.activeSelf); //Flips window to the opposite state
+        //chosenWindowOff.SetActive(!chosenWindowOff.activeSelf); //Flips matching off window to the opposite state
 
     }
 
