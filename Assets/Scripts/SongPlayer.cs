@@ -5,6 +5,8 @@ public class SongPlayer : MonoBehaviour
 {
     [SerializeField] private List<AudioClip> songClips;
 
+    //In case need to use the original songs index
+    private List<AudioClip> originIndex;
     private AudioSource audioSource;
     private int currentPlayIndex;
     void Start()
@@ -16,17 +18,13 @@ public class SongPlayer : MonoBehaviour
 
     void Update()
     {
-        if (audioSource.isPlaying) return;
-
-        audioSource.clip = songClips[currentPlayIndex];
-
-        audioSource.Play();
-
-        currentPlayIndex += 1 % songClips.Count;
+        PlayNextSong();
     }
 
     void RandomizeList()
     {
+        originIndex = songClips;
+
         System.Random rng = new System.Random();
 
         int n = songClips.Count;
@@ -39,5 +37,16 @@ public class SongPlayer : MonoBehaviour
             songClips[k] = songClips[n];
             songClips[n] = value;
         }
+    }
+
+    void PlayNextSong()
+    {
+        if (audioSource.isPlaying) return;
+
+        audioSource.clip = songClips[currentPlayIndex];
+
+        audioSource.Play();
+
+        currentPlayIndex += 1 % songClips.Count;
     }
 }
