@@ -705,7 +705,7 @@ MonoBehaviour:
     distance: 0
   moveSpeed: 5
   startTime: 0
-  minInterval: 20
+  minInterval: 30
   maxInterval: 50
   Soundsource: {fileID: 8635318236748991757}
 --- !u!114 &6670304886100596064
