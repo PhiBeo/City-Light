@@ -56,7 +56,7 @@ public class WindowFlickering : MonoBehaviour
             if (RandomBool(2))
             {
                 windowPanes[i].SetActive(false);
-               // windowPanesOff[i].SetActive(true);
+                windowPanesOff[i].SetActive(true);
             }
         }
     }
@@ -130,9 +130,9 @@ public class WindowFlickering : MonoBehaviour
     {
         randomIndex = Random.Range(0, windowPanes.Count); //Chooses a random index to flip, saves time from cycling through entire list of windows
         chosenWindowOn = windowPanes[randomIndex];
-        //chosenWindowOff = windowPanesOff[randomIndex];
+        chosenWindowOff = windowPanesOff[randomIndex];
         chosenWindowOn.SetActive(!chosenWindowOn.activeSelf); //Flips window to the opposite state
-        //chosenWindowOff.SetActive(!chosenWindowOff.activeSelf); //Flips matching off window to the opposite state
+        chosenWindowOff.SetActive(!chosenWindowOff.activeSelf); //Flips matching off window to the opposite state
 
     }
 
@@ -144,5 +144,11 @@ public class WindowFlickering : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void StartTimer()
+    {
+        timer = 0f;
+        playTimer = 0f;
     }
 }
