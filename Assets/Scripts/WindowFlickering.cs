@@ -24,6 +24,8 @@ public class WindowFlickering : MonoBehaviour
 
     private int musicFlipCount = 0;
 
+    private bool firstplay = true;
+
     private void Start()
     {
         windowPanes = new List<GameObject>();
@@ -148,7 +150,12 @@ public class WindowFlickering : MonoBehaviour
 
     public void StartTimer()
     {
-        timer = 0f;
+        if (firstplay)
+        {
+            firstplay = false;
+            return;
+        }
+        timer = 0;
         playTimer = 0f;
     }
 }
