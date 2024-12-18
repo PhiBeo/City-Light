@@ -4,6 +4,7 @@ using UnityEngine;
 public class SongPlayer : MonoBehaviour
 {
     [SerializeField] private List<AudioClip> songClips;
+    [SerializeField] private WindowFlickering windows;
 
     //In case need to use the original songs index
     private List<AudioClip> originIndex;
@@ -14,6 +15,12 @@ public class SongPlayer : MonoBehaviour
         RandomizeList();
         currentPlayIndex = 0;
         audioSource = GetComponent<AudioSource>();
+
+        //in case not set WindowFlickering in the inspector
+        if(windows == null)
+        {
+            windows = FindObjectOfType<WindowFlickering>();
+        }
     }
 
     void Update()
@@ -29,6 +36,7 @@ public class SongPlayer : MonoBehaviour
 
         int n = songClips.Count;
 
+        //shuffle the song list
         while (n > 1)
         {
             n--;
@@ -46,6 +54,8 @@ public class SongPlayer : MonoBehaviour
         audioSource.clip = songClips[currentPlayIndex];
 
         audioSource.Play();
+
+        windows.StartTimer();
 
         currentPlayIndex += 1 % songClips.Count;
     }
