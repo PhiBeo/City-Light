@@ -22,7 +22,7 @@ public class SurroundSound : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        timer = Random.Range(minInterval, maxInterval);
+        timer = Time.time + Random.Range(minInterval, maxInterval);
         startPos = transform.position;
 
         playedTime = new Dictionary<int, int>();
@@ -37,8 +37,7 @@ public class SurroundSound : MonoBehaviour
     {
         if (audioSource.isPlaying) return;
         
-        timer -= Time.deltaTime;
-        if(timer <= 0f)
+        if(Time.time >= timer)
         {
             if(randomLocation)
             {
@@ -67,7 +66,7 @@ public class SurroundSound : MonoBehaviour
 
         playedTime[randIndex]++;
 
-        timer = Random.Range(minInterval, maxInterval);
+        timer = Time.time + Random.Range(minInterval, maxInterval);
     }
 
     void MoveToRandomLocation()
@@ -94,8 +93,6 @@ public class SurroundSound : MonoBehaviour
         {
             return value;
         }
-
-        Debug.Log("Balance sound played count");
 
         //if random sound is played too many time
         //selected the smallest played sound
