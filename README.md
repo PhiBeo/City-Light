@@ -1,30 +1,22 @@
-# Limapp Template
-This is a Unity Project template with the Liminal SDK installed.
+# 🌃 City Lights: A Visual & Auditory Experience
 
-## Requirements
-- [Git setup correctly in your environment path](https://github.com/LiminalVR/LiminalSdk-UnityPackage/blob/develop/README.md#setup-git)
+**Rooftop** is a short, non-interactive visual and auditory experience built in **Unity** for a school project. It places the viewer atop a peaceful rooftop in the middle of a lively city at night. With stylized visuals and ambient audio, the experience aims to create a calm, meditative atmosphere where players can simply exist and observe.
 
-## TO DO
-- Change the Company Name
-- Change app name
-- Change package name, com.company.myapp
+## 🎥 Synopsis
 
-## Examples
-Go to Examples -> Scenes -> Example
-- A way to interact with Unity UI using the pointer
-- A way to interact with 3D objects using the pointer
-- Ending Experience
-- Fading the screen
+You're seated alone on a rooftop in the middle of a bustling city. Soft purples, muted greens, and deep blues color the skyline around you. Tall, monolithic buildings flicker with the life of the city—windows lighting and dimming as time passes. Above, a few planes trace glowing paths through a star-filled sky. A subtle, low-frequency electronic track drifts through the space, merging with distant sounds: sirens, car horns, and the wind. A table sits nearby with a warm cup of tea, grounding you in this quiet moment of reflection.
 
-## Project Settings
-- Android ready
-- Oculus VR Ready
-- Graphics & Quality settings to Liminal's standards
+This project is designed not to be played, but **experienced**. There are no controls, no objectives—just 7 minutes of visual and auditory immersion.
 
-## Notes
-The first time you open the project may take up to 5 minutes, Unity will give you a window
-> Unity Package Manager - Resolving packages... 
+## 🧩 Features
 
-## Troubleshooting
-- Unable to open Unity due to Package Manager Manifest issues
-  - Chances are your git is not setup properly.
+- Virtual Reality (Oculus Quest 2)
+- A single-scene experience lasting ~3 minutes
+- Simple, stylized geometry and low-cost materials
+- Night-time ambiance with visible stars
+- Distant city audio: sirens, cars, wind, and more
+- Lo-fi ambient music for relaxation
+
+## 🎮 Platform
+
+- Unity version: `2019.1.10f1`
